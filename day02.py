@@ -2,38 +2,37 @@ with open(file='data.txt') as file:
     strategy_guide = file.read().split("\n")
 
 
-ELF_SHAPES = {"A": 'r', "B": 'p', "C": 's'} 
-USER_SHAPES = {"X": 'r', "Y": 'p', "Z": 's'}
-SHAPE_POINTS = {'r': 1, 'p': 2, 's': 3}
-IF_WINNING = {'A': "p", "B": "s", "C": "r"}
-IF_LOSING = {'A': "s", "B": "r", "C": "p"}
+SHAPES = {"A": "X", "B": "Y", "C": "Z"}
+SHAPE_POINTS = {"X": 1, "Y": 2, "Z": 3}
+BEATS = {'A': "Y", "B": "Z", "C": "X"}
+YIELDS_TO = {'A': "Z", "B": "X", "C": "Y"}
 
 
-total_score_a = 0
-total_score_b = 0
+total_score = 0
+updated_total_score = 0
 
 for current_round in strategy_guide:
-    elf_hand, user_hand = current_round.split(" ")
+    elf_shape, user_shape = current_round.split(" ")
 
     # part one:
-    if ELF_SHAPES[elf_hand] == USER_SHAPES[user_hand]:
-        total_score_a += SHAPE_POINTS[USER_SHAPES[user_hand]] + 3
-    elif ELF_SHAPES[elf_hand] == 'r' and USER_SHAPES[user_hand] == 'p' or ELF_SHAPES[elf_hand] == 'p' and USER_SHAPES[user_hand] == 's' \
-        or ELF_SHAPES[elf_hand] == 's' and USER_SHAPES[user_hand] == 'r':
-        total_score_a += SHAPE_POINTS[USER_SHAPES[user_hand]] + 6
-    else:
-        total_score_a += SHAPE_POINTS[USER_SHAPES[user_hand]]
+    if user_shape == BEATS[elf_shape]:
+        total_score += SHAPE_POINTS[user_shape] + 6
+    elif user_shape == SHAPES[elf_shape]:  # draw
+        total_score += SHAPE_POINTS[user_shape] + 3
+    elif user_shape == YIELDS_TO[elf_shape]:
+        total_score += SHAPE_POINTS[user_shape]
 
     # part two:
-    if user_hand == "X":
-        total_score_b += SHAPE_POINTS[IF_LOSING[elf_hand]]
-    elif user_hand == "Y":
-        total_score_b += SHAPE_POINTS[ELF_SHAPES[elf_hand]] + 3
-    else:
-        total_score_b += SHAPE_POINTS[IF_WINNING[elf_hand]] + 6
+    if user_shape == "X":
+        updated_total_score += SHAPE_POINTS[YIELDS_TO[elf_shape]]
+    elif user_shape == "Y":  # draw
+        updated_total_score += SHAPE_POINTS[SHAPES[elf_shape]] + 3
+    elif user_shape == "Z":
+        updated_total_score += SHAPE_POINTS[BEATS[elf_shape]] + 6
 
 
 # part one:
-print(total_score_a)
+print(total_score)
 # part two:
-print(total_score_b)
+print(updated_total_score)
+
