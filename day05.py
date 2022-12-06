@@ -65,7 +65,6 @@ if __name__ == "__main__":
         instructions = [list(map(int, line.replace("move ", "").replace("from ", " ").replace("to ", " ").split("  "))) for line in data.split("\n")[splice_point + 1:]]
 
     crate_stacks = StackGenerator(stack_data, splice_point).final_output
-    print(crate_stacks)
     muddy_crane = CrateMover9001(crate_stacks)
     shiny_new_crane = CrateMover9001(deepcopy(crate_stacks))
 
