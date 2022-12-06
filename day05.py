@@ -6,7 +6,7 @@ class StackGenerator:
 
     def build_crate_grid(self):
         # 4 empty strings equates to 1 space
-        crate_grid = [[""] * 9 for _ in range(8)]
+        crate_grid = [[""] * 10 for _ in range(10)]
         for r, row in enumerate(self.parsing_data):
             c, empty_string_counts = 0, 0
             for element in row:
