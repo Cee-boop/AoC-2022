@@ -28,7 +28,10 @@ class StackGenerator:
                 if grid[r][c]:
                     self.final_output[c + 1].append(grid[r][c])
 
-            self.final_output[c + 1] = self.final_output[c + 1][::-1]
+            if self.final_output[c + 1]:
+                self.final_output[c + 1] = self.final_output[c + 1][::-1]
+            else:
+                del self.final_output[c + 1]
 
 
 class CrateMover9001:
@@ -50,7 +53,7 @@ class CrateMover9001:
         self.crate_stacks[new_stack] += crane_load[::-1]
 
     def identify_top_crates(self) -> str:
-        return "".join([stack[-1] for stack in self.crate_stacks.values() if stack])
+        return "".join([stack[-1] for stack in self.crate_stacks.values()])
 
 
 if __name__ == "__main__":
@@ -62,6 +65,7 @@ if __name__ == "__main__":
         instructions = [list(map(int, line.replace("move ", "").replace("from ", " ").replace("to ", " ").split("  "))) for line in data.split("\n")[splice_point + 1:]]
 
     crate_stacks = StackGenerator(stack_data, splice_point).final_output
+    print(crate_stacks)
     muddy_crane = CrateMover9001(crate_stacks)
     shiny_new_crane = CrateMover9001(deepcopy(crate_stacks))
 
