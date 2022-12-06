@@ -1,12 +1,13 @@
 class StackGenerator:
-    def __init__(self, parsing_data: list):
+    def __init__(self, parsing_data: list, grid_size: int):
         self.final_output = {}
         self.parsing_data = parsing_data
+        self.grid_size = grid_size
         self.build_crate_grid()
 
     def build_crate_grid(self):
         # 4 empty strings equates to 1 space
-        crate_grid = [[""] * 10 for _ in range(10)]
+        crate_grid = [[""] * self.grid_size for _ in range(self.grid_size)]
         for r, row in enumerate(self.parsing_data):
             c, empty_string_counts = 0, 0
             for element in row:
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         stack_data = [line.split(" ") for line in data.split("\n")][:splice_point - 1]
         instructions = [list(map(int, line.replace("move ", "").replace("from ", " ").replace("to ", " ").split("  "))) for line in data.split("\n")[splice_point + 1:]]
 
-    crate_stacks = StackGenerator(stack_data).final_output
+    crate_stacks = StackGenerator(stack_data, splice_point).final_output
     muddy_crane = CrateMover9001(crate_stacks)
     shiny_new_crane = CrateMover9001(deepcopy(crate_stacks))
 
