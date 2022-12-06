@@ -2,9 +2,9 @@ class StackGenerator:
     def __init__(self, parsing_data: list):
         self.final_output = {}
         self.parsing_data = parsing_data
-        self.build_grid()
+        self.build_crate_grid()
 
-    def build_grid(self):
+    def build_crate_grid(self):
         # 4 empty strings equates to 1 space
         crate_grid = [[""] * 9 for _ in range(8)]
         for r, row in enumerate(self.parsing_data):
@@ -49,15 +49,16 @@ class CrateMover9001:
         self.crate_stacks[new_stack] += crane_load[::-1]
 
     def identify_top_crates(self) -> str:
-        return "".join([stack[-1] for stack in self.crate_stacks.values()])
+        return "".join([stack[-1] for stack in self.crate_stacks.values() if stack])
 
 
 if __name__ == "__main__":
     from copy import deepcopy
     with open(file='data.txt') as file:
         data = file.read()
-        stack_data = [line.split(" ") for line in data.split("\n")][:8]
-        instructions = [list(map(int, line.replace("move ", "").replace("from ", " ").replace("to ", " ").split("  "))) for line in data.split("\n")[10:]]
+        splice_point = [i for i in range(len(data.split("\n"))) if len(data.split("\n")[i]) == 0][0]
+        stack_data = [line.split(" ") for line in data.split("\n")][:splice_point - 1]
+        instructions = [list(map(int, line.replace("move ", "").replace("from ", " ").replace("to ", " ").split("  "))) for line in data.split("\n")[splice_point + 1:]]
 
     crate_stacks = StackGenerator(stack_data).final_output
     muddy_crane = CrateMover9001(crate_stacks)
