@@ -70,5 +70,7 @@ def find_smallest_path(coord_one: int, coord_two: int, find_multiple_paths: bool
             queue.append((distance + 1, new_row, new_col))
 
 
+# part one:
 print(find_smallest_path(start_row, start_col, find_multiple_paths=False))
+# part two:
 print(find_smallest_path(end_row, end_col, find_multiple_paths=True))
